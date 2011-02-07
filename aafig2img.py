@@ -88,6 +88,7 @@ class Application():
                           help="use fixed font")
         self.options, args = parser.parse_args()
         verbose = self.options.verbose
+        print_verbose("Runing filter script %s" % os.path.realpath(sys.argv[0]))
         if len(args) != 1:
             parser.error("Invalid number of arguments")
         self.infile = args[0]
