@@ -2,7 +2,7 @@ aafigure filter for AsciiDoc
 ============================
 Author: Henrik Maier
 
-Version: 1.0
+Version: 1.1
 
 
 Introduction
@@ -100,8 +100,8 @@ FT_Stream_Open: could not open `C:\WINDOWS\fonts\Courier_New.ttf'
 WARNING: font not found, using PIL default font
 ---------------------
 
-To avoid the warning and error messages make a local copy of the the font
-files into same directory as the filter script and rename them accordingly.
+To avoid the warning and error messages local copies of the GPL'd Liberation
+fonts are included in this filter distribution for convenience.
 
 
 Examples

@@ -10,7 +10,7 @@ granted under the terms of the GNU General Public License (GPL).
 """
 
 usage = "%prog [options] inputfile"
-__version__ = '1.0'
+__version__ = '1.1'
 
 # Suppress warning: "the md5 module is deprecated; use hashlib instead"
 import warnings
@@ -127,8 +127,16 @@ class Application():
             print_verbose('Skipped: no change: %s' % outfile)
             return
         if self.options.format == 'svg':
+            font = None # Embed no font info for SVGs, SVGs use font-family attribute
             visitor = WidthHeightSVGOutputVisitor
         else:
+            # Be specific about fonts with PNGs as font files are otherwise platform specific
+            if self.options.proportional:
+                font = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),
+                                    "LiberationSans-Regular.ttf")
+            else:
+                font = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),
+                                    "LiberationMono-Regular.ttf")
             visitor = aafigure.pil.PILOutputVisitor
         aafigure.process(unicode(source, 'utf-8'), visitor,
                          options={'file_like': open(outfile, "wb"),
@@ -140,7 +148,9 @@ class Application():
                                   'fill': self.options.fill,
                                   'foreground': self.options.foreground,
                                   'background': self.options.background,
-                                  'format':self.options.format})
+                                  'format':self.options.format,
+                                  'font': font
+                                  })
         # To suppress asciidoc 'no output from filter' warnings.
         if self.infile == '-':
             sys.stdout.write(' ')
