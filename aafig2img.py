@@ -10,7 +10,7 @@ granted under the terms of the GNU General Public License (GPL).
 """
 
 usage = "%prog [options] inputfile"
-__version__ = '1.1'
+__version__ = '1.2'
 
 # Suppress warning: "the md5 module is deprecated; use hashlib instead"
 import warnings
@@ -73,7 +73,7 @@ class Application():
                           help="image scaling")
         parser.add_option("-a", "--aspect", type=float, default=1.0,
                           help="set aspect ratio")
-        parser.add_option("-l", "--linewidth", type=float, default=2.0,
+        parser.add_option("-l", "--linewidth", type=float, default=1.0,
                           help="set linewidth (svg only)")
         parser.add_option("-c", "--foreground", default="#000000",
                           help="foreground color")
