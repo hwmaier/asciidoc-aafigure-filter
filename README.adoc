@@ -30,4 +30,4 @@ renders:
 
 image::images/asciidoc-aafigure-readme__6.png[]
 
-More information and examples can be found on the link:asciidoc-aafigure-readme.html[README page].
+More information and examples can be found on the link:https://cdn.rawgit.com/hwmaier/asciidoc-aafigure-filter/master/asciidoc-aafigure-readme.html[README page].
