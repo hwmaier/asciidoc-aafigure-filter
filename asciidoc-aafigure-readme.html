@@ -1,0 +1,673 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>aafigure filter for AsciiDoc</title>
+<style type="text/css">
+/* Sans-serif font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+div#toctitle,
+span#author, span#revnumber, span#revdate, span#revremark,
+div#footer {
+  font-family: tahoma, verdana, sans-serif;
+}
+
+/* Serif font. */
+div.sectionbody {
+  font-family: tahoma, verdana, sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+tt {
+  color: navy;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+span#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+span#email {
+}
+span#revnumber, span#revdate, span#revremark {
+}
+
+div#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+div#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+div#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+div#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid silver;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #dddddd;
+  color: #777777;
+}
+/*HM+*/
+div.verseblock {
+  border-left: none;
+}
+/*HM-*/
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  div#footer-badges { display: none; }
+}
+
+div#toc {
+  margin-bottom: 2.5em;
+}
+
+div#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+</style>
+</head>
+<body class="article">
+<div id="header">
+<h1>aafigure filter for AsciiDoc
+</h1>
+<span id="author">Author: Henrik Maier</span><br />
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>Version: 1.1</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Aafigure (<a href="http://https://launchpad.net/aafigure">http://https://launchpad.net/aafigure</a>) is an application for
+ASCII line art to image conversion. Using the AsciiDoc aafigure filter, ASCII
+line art can be embedded into AsciiDoc documents and processed into either PNG
+bitmap or SVG vector graphics.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage">Usage</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+The aafigure filter is invoked by setting the listing block or
+  paragraph style (the first positional block attribute) to <em>"aafigure"</em>.
+</p>
+</li>
+<li>
+<p>
+The second positional attribute (named <em>target</em>) is optional, it sets
+  the name of the generated image file. If this is not supplied a
+  file name is automatically generated.
+</p>
+</li>
+<li>
+<p>
+The default output format is SVG for DocBook and PNG for all other backends.
+</p>
+</li>
+<li>
+<p>
+Additional well known aafigure options can be specified as named attributes. Refer to table below.
+</p>
+</li>
+</ul></div>
+<div class="tableblock">
+<table rules="rows"
+width="100%"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<caption class="title">Table 1. Supported aafigure options</caption>
+<col width="20%" />
+<col width="35%" />
+<col width="10%" />
+<col width="35%" />
+<thead>
+<tr>
+<th align="left" valign="top"> Option       </th>
+<th align="left" valign="top"> Example                        </th>
+<th align="left" valign="top"> Default </th>
+<th align="left" valign="top"> Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><em>format</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",format="png"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>svg</tt> for DocBook, otherwise <tt>png</tt></p></td>
+<td align="left" valign="top"><p class="table">Image file format</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>scaling</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",scaling="0.5"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>1.0</tt></p></td>
+<td align="left" valign="top"><p class="table">aafigure image scaling
+    <span class="footnote"><br />[<tt>scaling</tt> is different to the DocBook backend&#8217;s image <tt>scale</tt> attribute!]<br /></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>aspect</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",aspect="0.7"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>1.0</tt></p></td>
+<td align="left" valign="top"><p class="table">set aafigure aspect ratio</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>linewidth</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",linewidth="4.0"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>2.0</tt></p></td>
+<td align="left" valign="top"><p class="table">set linewidth (svg only)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>foreground</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",foreground="#ff1050"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>#000000</tt></p></td>
+<td align="left" valign="top"><p class="table">foreground color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>background</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",background="#eeeeee"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>#ffffff</tt></p></td>
+<td align="left" valign="top"><p class="table">background color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>fill</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",fill="#fff"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>#000000</tt></p></td>
+<td align="left" valign="top"><p class="table">fill color (png only)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>textual</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",options="textual"]</tt></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">disable horizontal fill detection</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>proportional</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",options="proportional"]</tt></p></td>
+<td align="left" valign="top"><p class="table"><tt>proportional</tt></p></td>
+<td align="left" valign="top"><p class="table">use proportional font (default)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><em>fixed</em></p></td>
+<td align="left" valign="top"><p class="table"><tt>["aafigure",options="fixed"]</tt></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">used fixed-width font</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>This AsciiDoc block:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>["aafigure"]
+-------------------------------------------------------------------------------
+    +---------------+
+    |A box with text|
+    +---------------+
+-------------------------------------------------------------------------------</tt></pre>
+</div></div>
+<div class="paragraph"><p>renders:</p></div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__1.png" alt="asciidoc-aafigure-readme__1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In addition to AsciiDoc you will need to have installed:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+The aafigure Python package (<a href="https://launchpad.net/aafigure">https://launchpad.net/aafigure</a>)
+</p>
+</li>
+<li>
+<p>
+The Python Imaging Library (PIL) package (<a href="http://www.pythonware.com/products/pil/">http://www.pythonware.com/products/pil/</a>)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The filter was developed and tested on Windows using aafigure 0.5, PIL 1.1.7
+and AsciiDoc 8.6.3.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_known_issues">Known Issues</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The Python Imaging Library (PIL) does a very poor job determining the correct
+font file on Windows platforms. It may generate warning and error messages as
+shown below if the font file names do not exactly match:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>FT_Stream_Open: could not open `LiberationSans-Regular.ttf'
+FT_Stream_Open: could not open `C:\WINDOWS\fonts\LiberationSans-Regular.ttf'
+FT_Stream_Open: could not open `Arial.ttf'</tt></pre>
+</div></div>
+<div class="paragraph"><p>or</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>FT_Stream_Open: could not open `LiberationMono-Regular.ttf'
+FT_Stream_Open: could not open `C:\WINDOWS\fonts\LiberationMono-Regular.ttf'
+FT_Stream_Open: could not open `Courier_New.ttf'
+FT_Stream_Open: could not open `C:\WINDOWS\fonts\Courier_New.ttf'
+WARNING: font not found, using PIL default font</tt></pre>
+</div></div>
+<div class="paragraph"><p>To avoid the warning and error messages local copies of the GPL&#8217;d Liberation
+fonts are included in this filter distribution for convenience.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The following examples are taken from the aafigure documentation.</p></div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__2.png" alt="asciidoc-aafigure-readme__2.png" />
+</div>
+<div class="title">Figure 1. Different arrow types</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__3.png" alt="asciidoc-aafigure-readme__3.png" />
+</div>
+<div class="title">Figure 2. Another example</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__4.png" alt="asciidoc-aafigure-readme__4.png" />
+</div>
+<div class="title">Figure 3. Flow chart</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__5.png" alt="asciidoc-aafigure-readme__5.png" />
+</div>
+<div class="title">Figure 4. Sequence diagram</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__6.png" alt="asciidoc-aafigure-readme__6.png" />
+</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__7.png" alt="asciidoc-aafigure-readme__7.png" />
+</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__8.png" alt="asciidoc-aafigure-readme__8.png" />
+</div>
+<div class="title">Figure 5. Electrical circuit</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__9.png" alt="asciidoc-aafigure-readme__9.png" />
+</div>
+<div class="title">Figure 6. Schematic diagram</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__10.png" alt="asciidoc-aafigure-readme__10.png" />
+</div>
+<div class="title">Figure 7. Timing diagram</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__11.png" alt="asciidoc-aafigure-readme__11.png" />
+</div>
+<div class="title">Figure 8. Timing diagram with descriptions</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__12.png" alt="asciidoc-aafigure-readme__12.png" />
+</div>
+<div class="title">Figure 9. Statistical diagrams</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__13.png" alt="asciidoc-aafigure-readme__13.png" />
+</div>
+<div class="title">Figure 10. Just some bars</div>
+</div>
+<div class="imageblock aafigure">
+<div class="content">
+<img src="images/asciidoc-aafigure-readme__14.png" alt="asciidoc-aafigure-readme__14.png" />
+</div>
+<div class="title">Figure 11. Schedules</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+</body>
+</html>
