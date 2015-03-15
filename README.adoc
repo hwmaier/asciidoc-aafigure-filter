@@ -28,6 +28,6 @@ For example this ASCII text:
 
 renders:
 
-image::asciidoc-aafigure-readme__6.png[]
+image::images/asciidoc-aafigure-readme__6.png[]
 
 More information and examples can be found on the link:asciidoc-aafigure-readme.html[README page].
