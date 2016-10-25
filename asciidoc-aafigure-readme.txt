@@ -8,7 +8,7 @@ Version: 1.1
 Introduction
 ------------
 
-Aafigure (link:http://https://launchpad.net/aafigure[]) is an application for
+Aafigure (link:https://launchpad.net/aafigure[]) is an application for
 ASCII line art to image conversion. Using the AsciiDoc aafigure filter, ASCII
 line art can be embedded into AsciiDoc documents and processed into either PNG
 bitmap or SVG vector graphics.
