@@ -10,7 +10,7 @@ granted under the terms of the GNU General Public License (GPL).
 """
 
 usage = "%prog [options] inputfile"
-__version__ = '1.2'
+__version__ = '1.3'
 
 # Suppress warning: "the md5 module is deprecated; use hashlib instead"
 import warnings
@@ -127,7 +127,10 @@ class Application():
             print_verbose('Skipped: no change: %s' % outfile)
             return
         if self.options.format == 'svg':
-            font = None # Embed no font info for SVGs, SVGs use font-family attribute
+            if self.options.proportional:
+                font = 'sans-serif'
+            else:
+                font = 'monospace'
             visitor = WidthHeightSVGOutputVisitor
         else:
             # Be specific about fonts with PNGs as font files are otherwise platform specific
