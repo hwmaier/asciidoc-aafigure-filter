@@ -5,23 +5,20 @@ convert ASCII line drawings into either a SVG or PNG image file.
 Requires the aafigure Python package and Python Imaging Library (PIL) packages
 to be installed.
 
-Copyright (C) 2011 Henrik Maier. Free use of this software is
+Copyright (C) 2011-2022 Henrik Maier. Free use of this software is
 granted under the terms of the GNU General Public License (GPL).
 """
 
 usage = "%prog [options] inputfile"
-__version__ = '1.3'
+__version__ = '2.0'
 
-# Suppress warning: "the md5 module is deprecated; use hashlib instead"
-import warnings
-warnings.simplefilter('ignore',DeprecationWarning)
-
-import os, sys, md5
+import os, sys, hashlib
 from optparse import *
 
 # Import aafigure which must be installed as Python package.
-# Tested with aafigure 0.5
-import aafigure, aafigure.svg, aafigure.pil
+# Tested with aafigure 0.5 and aafigure 0.6. aafigure 0.6 renders font spacing slighly differently.
+import aafigure
+from aafigure import svg, pil
 
 
 #
@@ -105,11 +102,11 @@ class Application():
         outfile = os.path.abspath(self.options.outfile)
         outdir = os.path.dirname(outfile)
         if not os.path.isdir(outdir):
-            raise AppError, 'directory does not exist: %s' % outdir
+            raise AppError('directory does not exist: %s' % outdir)
         skip = False
         if self.infile == '-':
-            source = sys.stdin.read()
-            checksum = md5.new(source).digest()
+            source = sys.stdin.read().encode()
+            checksum = hashlib.new('md5', source).digest()
             f = os.path.splitext(outfile)[0] + '.md5'
             if self.options.modified:
                 if os.path.isfile(f) and os.path.isfile(outfile) and \
@@ -118,11 +115,11 @@ class Application():
                 open(f, 'wb').write(checksum)
         else:
             if not os.path.isfile(self.infile):
-                raise AppError, 'input file does not exist: %s' % self.infile
+                raise AppError('input file does not exist: %s' % self.infile)
             if self.options.modified and os.path.isfile(outfile) and \
                     os.path.getmtime(self.infile) <= os.path.getmtime(outfile):
                 skip = True
-            source = open(self.infile).read()
+            source = open(self.infile, 'rb').read()
         if skip:
             print_verbose('Skipped: no change: %s' % outfile)
             return
@@ -141,7 +138,7 @@ class Application():
                 font = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),
                                     "LiberationMono-Regular.ttf")
             visitor = aafigure.pil.PILOutputVisitor
-        aafigure.process(unicode(source, 'utf-8'), visitor,
+        aafigure.process(source.decode('ascii'), visitor,
                          options={'file_like': open(outfile, "wb"),
                                   'proportional': self.options.proportional,
                                   'textual': self.options.textual,
@@ -169,6 +166,6 @@ if __name__ == "__main__":
         app.run()
     except KeyboardInterrupt:
         sys.exit("Ouch!")
-    except Exception, e:
+    except Exception as e:
         sys.exit("%s: %s\n" % (os.path.basename(sys.argv[0]), e))
 
